@@ -13,6 +13,7 @@ import java.util.Scanner;
 import javafx.stage.FileChooser;
 import me.t3sl4.textfileencoderdemo.tfencoderdemo.utils.AES;
 import me.t3sl4.textfileencoderdemo.tfencoderdemo.utils.FileEncryption;
+import me.t3sl4.textfileencoderdemo.tfencoderdemo.utils.FileZIP;
 import me.t3sl4.textfileencoderdemo.tfencoderdemo.utils.SHA256;
 
 public class MainController {
@@ -72,7 +73,7 @@ public class MainController {
     public static String spnDecodedText = null;
     public static File selectedFile = null;
     public static File selectedDecFile = null;
-    public static String oldExtension = null;
+    public static String finalPath = null;
 
     public static int keyStat = 0;
 
@@ -271,9 +272,9 @@ public class MainController {
     public void encodeSelectedFile() {
         if(selectedFile != null && key != null) {
             try {
-                FileEncryption.encryptFile(selectedFile.getAbsolutePath(), key);
-                fileExtension.setText(findExtension(selectedFile.getName()));
-                //FileEncryption.decryptFile(selectedFile.getAbsolutePath(), key, findExtension(selectedFile.getName()));
+                finalPath = FileZIP.compressFile(selectedFile.getAbsolutePath());
+                fileExtension.setText(findExtension(finalPath));
+                FileEncryption.encryptFile(finalPath, key);
                 selectedFilePath.setText(null);
             } catch (IOException e) {
                 e.printStackTrace();
