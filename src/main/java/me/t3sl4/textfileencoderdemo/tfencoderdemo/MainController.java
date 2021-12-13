@@ -73,6 +73,7 @@ public class MainController {
     public static String spnDecodedText = null;
     public static File selectedFile = null;
     public static File selectedDecFile = null;
+    public static File finalSelectedFile = null;
     public static String finalPath = null;
 
     public static int keyStat = 0;
@@ -255,6 +256,7 @@ public class MainController {
         File d = ds.showOpenDialog(null);
         if(d != null) {
             selectedFile = d;
+            FileZIP.compressFile(selectedFile.getAbsolutePath());
             selectedFilePath.setText(selectedFile.getAbsolutePath());
         }
     }
@@ -272,9 +274,8 @@ public class MainController {
     public void encodeSelectedFile() {
         if(selectedFile != null && key != null) {
             try {
-                finalPath = FileZIP.compressFile(selectedFile.getAbsolutePath());
-                fileExtension.setText(findExtension(finalPath));
-                FileEncryption.encryptFile(finalPath, key);
+                fileExtension.setText(findExtension(selectedFile.getAbsolutePath()+".zip"));
+                FileEncryption.encryptFile(selectedFile.getAbsolutePath()+".zip", key);
                 selectedFilePath.setText(null);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -329,9 +330,6 @@ public class MainController {
 
     private String AESencrypt(String plainText, String key) throws Exception {
         String encryptedTextBase64 = AES.encrypt(plainText.getBytes(UTF_8), key);
-        //byte[] encodedAESEncyrpt = encryptedTextBase64.getBytes();
-        //byte[] decoded = Base64.decodeBase64(encodedAESEncyrpt);
-        //String cipherText = new String(decoded);
         return encryptedTextBase64;
     }
 

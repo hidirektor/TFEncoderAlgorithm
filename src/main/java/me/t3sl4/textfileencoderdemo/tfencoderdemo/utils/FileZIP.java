@@ -1,15 +1,12 @@
 package me.t3sl4.textfileencoderdemo.tfencoderdemo.utils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class FileZIP {
-    public static String compressFile(String sourceFile) throws IOException {
+    public static void compressFile(String sourceFile) throws IOException {
+        File delete = new File(sourceFile);
         FileOutputStream fos = new FileOutputStream(sourceFile+".zip");
 
         ZipOutputStream zipOut = new ZipOutputStream(fos);
@@ -28,6 +25,6 @@ public class FileZIP {
         zipOut.close();
         fis.close();
         fos.close();
-        return fileToZip.getAbsolutePath();
+        delete.delete();
     }
 }
