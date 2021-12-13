@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -75,6 +77,7 @@ public class MainController {
     public static File selectedDecFile = null;
     public static File finalSelectedFile = null;
     public static String finalPath = null;
+    public static String newPath = null;
 
     public static int keyStat = 0;
 
@@ -256,26 +259,25 @@ public class MainController {
         File d = ds.showOpenDialog(null);
         if(d != null) {
             selectedFile = d;
-            FileZIP.compressFile(selectedFile.getAbsolutePath());
             selectedFilePath.setText(selectedFile.getAbsolutePath());
         }
     }
 
     public void fileDecodingButton() throws IOException {
         FileChooser ds = new FileChooser();
-        ds.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sadece .encrypted", "*.encrypted"));
+        ds.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sadece .encrypted", "*.encrypted", "*.zip"));
         File d = ds.showOpenDialog(null);
         if(d != null) {
             selectedDecFile = d;
-            selectedDecFilePath.setText(selectedFile.getAbsolutePath());
+            selectedDecFilePath.setText(selectedDecFile.getAbsolutePath());
         }
     }
 
     public void encodeSelectedFile() {
         if(selectedFile != null && key != null) {
             try {
-                fileExtension.setText(findExtension(selectedFile.getAbsolutePath()+".zip"));
-                FileEncryption.encryptFile(selectedFile.getAbsolutePath()+".zip", key);
+                fileExtension.setText(findExtension(selectedFile.getAbsolutePath()));
+                FileEncryption.encryptFile(selectedFile.getAbsolutePath(), key);
                 selectedFilePath.setText(null);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -293,7 +295,12 @@ public class MainController {
     public void decodeSelectedFile() {
         if(selectedDecFile != null && key != null && fileExtension.getText() != null) {
             try {
-                FileEncryption.decryptFile(selectedDecFile.getAbsolutePath(), key, fileExtension.getText());
+                Path source = Paths.get(selectedDecFile.getAbsolutePath());
+                Path target = Paths.get(System.getProperty("user.home") + "/Desktop");
+                FileZIP.unzipFolder(source, target);
+                File delete = new File(selectedDecFile.getAbsolutePath());
+                delete.delete();
+                FileEncryption.decryptFile(newPath, key, fileExtension.getText());
                 selectedDecFilePath.setText(null);
             } catch (IOException e) {
                 e.printStackTrace();
