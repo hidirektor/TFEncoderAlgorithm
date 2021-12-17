@@ -1,4 +1,4 @@
-package me.t3sl4.textfileencoderdemo.tfencoderdemo;
+package me.t3sl4.textfileencoderdemo;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,12 +9,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    private Image TFEncoderAlgorithmIcon = new Image(getClass().getResourceAsStream("/icons/icon.png"));
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 640, 640);
-        //stage.getIcons().add(new Image("https://cdn-icons-png.flaticon.com/512/2362/2362335.png"));
-        stage.getIcons().add(new Image("https://i.imgur.com/puD6ReJ.png"));
+        stage.getIcons().add(TFEncoderAlgorithmIcon);
         stage.setTitle("TFEncoder");
         stage.setScene(scene);
         stage.setResizable(false);

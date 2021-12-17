@@ -1,4 +1,4 @@
-package me.t3sl4.textfileencoderdemo.tfencoderdemo.utils;
+package me.t3sl4.textfileencoderdemo.utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class AES {
-
     private static final String ENCRYPT_ALGO = "AES/GCM/NoPadding";
 
     private static final int TAG_LENGTH_BIT = 128;
